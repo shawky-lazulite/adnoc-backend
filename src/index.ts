@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url'
 import cors from 'cors'
 import { createClient } from '@supabase/supabase-js'
 import sharp from 'sharp'
+import fs from 'fs'
 import 'dotenv/config'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -314,20 +315,22 @@ async function compositeLogoOnImage(imageUrl: string): Promise<Buffer> {
   // Download the generated image
   const imageBuffer = await downloadImage(imageUrl)
   
-  // Download the logo
-  if (!LOGO_URL) {
-    console.warn('[Branding] No LOGO_URL configured, returning original image')
+  // Load the logo from local public directory
+  const logoPath = path.join(__dirname, '..', 'public', 'logo.png')
+  let logoBuffer: Buffer
+  try {
+    logoBuffer = fs.readFileSync(logoPath)
+  } catch {
+    console.warn('[Branding] Logo file not found at', logoPath, '- returning original image')
     return imageBuffer
   }
-  
-  const logoBuffer = await downloadImage(LOGO_URL)
   
   // Get image dimensions
   const imageMetadata = await sharp(imageBuffer).metadata()
   const imageWidth = imageMetadata.width || 2048
   
-  // Resize logo to be proportional (e.g., 15% of image width)
-  const logoWidth = Math.round(imageWidth * 0.15)
+  // Resize logo to be proportional (~10% of image width for subtle branding)
+  const logoWidth = Math.round(imageWidth * 0.10)
   const resizedLogo = await sharp(logoBuffer)
     .resize(logoWidth)
     .toBuffer()
