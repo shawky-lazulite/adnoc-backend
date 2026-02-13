@@ -10,7 +10,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 // Backend URL for generating page URLs
-const BACKEND_URL = process.env.BACKEND_URL || 'https://mubadla-backend.vercel.app'
+const BACKEND_URL = process.env.BACKEND_URL || 'https://adnoc-backend.vercel.app'
 
 // Logo URL in Supabase (will be uploaded there)
 const LOGO_URL = process.env.LOGO_URL || ''
@@ -20,6 +20,7 @@ const app = express()
 // Middleware
 app.use(cors())
 app.use(express.json({ limit: '50mb' })) // Large limit for base64 images
+app.use(express.static(path.join(__dirname, '..', 'public')))
 
 // API Key for securing endpoints
 const API_KEY = process.env.API_KEY || ''
@@ -834,20 +835,26 @@ app.get('/photo/:id', async (req, res) => {
             * { margin: 0; padding: 0; box-sizing: border-box; }
             body { 
               font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-              background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+              background: #31A6B0;
               min-height: 100vh;
               display: flex;
+              flex-direction: column;
               align-items: center;
               justify-content: center;
               color: white;
               text-align: center;
               padding: 20px;
             }
+            .logo { margin-bottom: 32px; }
+            .logo img { height: 48px; width: auto; }
             h1 { font-size: 2rem; margin-bottom: 1rem; }
             p { opacity: 0.7; }
           </style>
         </head>
         <body>
+          <div class="logo">
+            <img src="${BACKEND_URL}/logo.png" alt="ADNOC Logo" />
+          </div>
           <div>
             <h1>Photo Not Found</h1>
             <p>This photo may have been removed or the link is invalid.</p>
@@ -861,6 +868,8 @@ app.get('/photo/:id', async (req, res) => {
     const pageUrl = `${BACKEND_URL}/photo/${id}`
     
     // Serve the landing page
+    const logoUrl = `${BACKEND_URL}/logo.png`
+    
     res.type('html').send(`
       <!DOCTYPE html>
       <html lang="en">
@@ -868,20 +877,28 @@ app.get('/photo/:id', async (req, res) => {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="og:image" content="${imageUrl}">
-        <meta name="og:title" content="My AI Photo">
+        <meta name="og:title" content="My ADNOC AI Photo">
         <meta name="og:description" content="Check out my AI-generated photo!">
-        <title>My AI Photo</title>
+        <title>My ADNOC AI Photo</title>
         <style>
           * { margin: 0; padding: 0; box-sizing: border-box; }
           body { 
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            background: #31A6B0;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 20px;
             color: white;
+          }
+          .logo {
+            margin-top: 12px;
+            margin-bottom: 24px;
+          }
+          .logo img {
+            height: 48px;
+            width: auto;
           }
           .container {
             max-width: 600px;
@@ -895,7 +912,7 @@ app.get('/photo/:id', async (req, res) => {
             width: 100%;
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
           }
           .image-container img {
             width: 100%;
@@ -927,12 +944,16 @@ app.get('/photo/:id', async (req, res) => {
             box-shadow: 0 8px 24px rgba(0,0,0,0.3);
           }
           .btn-download {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: rgba(255,255,255,0.2);
             color: white;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.3);
           }
           .btn-share {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            background: rgba(255,255,255,0.2);
             color: white;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.3);
           }
           .btn svg {
             width: 20px;
@@ -942,7 +963,7 @@ app.get('/photo/:id', async (req, res) => {
           .footer {
             margin-top: auto;
             padding-top: 40px;
-            opacity: 0.6;
+            opacity: 0.7;
             font-size: 0.875rem;
             text-align: center;
           }
@@ -951,7 +972,7 @@ app.get('/photo/:id', async (req, res) => {
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: #333;
+            background: rgba(0,0,0,0.7);
             color: white;
             padding: 12px 24px;
             border-radius: 8px;
@@ -965,6 +986,10 @@ app.get('/photo/:id', async (req, res) => {
         </style>
       </head>
       <body>
+        <div class="logo">
+          <img src="${logoUrl}" alt="ADNOC Logo" />
+        </div>
+
         <div class="container">
           <div class="image-container">
             <img src="${imageUrl}" alt="AI Generated Photo" />
@@ -982,7 +1007,7 @@ app.get('/photo/:id', async (req, res) => {
           </div>
           
           <div class="footer">
-            Powered by Mubadla AI Photo Booth
+            Powered by ADNOC AI Photo Booth
           </div>
         </div>
         
@@ -1073,7 +1098,7 @@ app.get('/', (req, res) => {
     <html>
       <head>
         <meta charset="utf-8"/>
-        <title>Mubadla Backend API</title>
+        <title>ADNOC Backend API</title>
         <link rel="stylesheet" href="/style.css" />
       </head>
       <body>
@@ -1081,7 +1106,7 @@ app.get('/', (req, res) => {
           <a href="/">Home</a>
           <a href="/healthz">Health</a>
         </nav>
-        <h1>Mubadla Backend API</h1>
+        <h1>ADNOC Backend API</h1>
         <p>AI Photo Booth backend service.</p>
         <h2>Endpoints:</h2>
         <ul>

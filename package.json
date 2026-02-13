@@ -1,7 +1,7 @@
 {
-  "name": "mubadla-backend",
+  "name": "adnoc-backend",
   "version": "1.0.0",
-  "description": "Mubadla AI Photo Booth Backend",
+  "description": "ADNOC AI Photo Booth Backend",
   "type": "module",
   "scripts": {
     "dev": "tsx src/dev.ts",
