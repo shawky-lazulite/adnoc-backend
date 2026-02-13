@@ -1,0 +1,29 @@
+{
+  "name": "mubadla-backend",
+  "version": "1.0.0",
+  "description": "Mubadla AI Photo Booth Backend",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/dev.ts",
+    "build": "tsc",
+    "start": "node dist/dev.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.91.1",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.0",
+    "@types/sharp": "^0.32.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.2.3",
+    "express": "^4.18.2",
+    "sharp": "^0.34.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}
